@@ -23,6 +23,8 @@ class MediaProvider extends ChangeNotifier {
 
   Duration get position => _position;
 
+  int get currentIndex => _currentIndex;
+
   MediaProvider() {
     _initialAudioPlayer();
   }
@@ -49,7 +51,7 @@ class MediaProvider extends ChangeNotifier {
   }
 
 
-  Future<void>setAudioSource()async{
+  Future<void>_setAudioSource()async{
     if( currentSong != null ){
       final url = currentSong!.url;
       await _audioPlayer.setSourceUrl(url!);
@@ -59,20 +61,43 @@ class MediaProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> playPause() async{
+    if( isPlaying ){
+      await _audioPlayer.pause();
+    }else{
+      await _audioPlayer.play(UrlSource(currentSong!.url));
+    }
+  }
+
+  Future<void> _playCurrentSong()async{
+    await _setAudioSource();
+    await _audioPlayer.play(UrlSource(currentSong!.url));
+    notifyListeners();
+  }
+
   Future<void> playSongAtIndex(int index) async {
     if (index >= 0 && index < _playList.length) {
       _currentIndex = index;
+      _playCurrentSong();
     }
   }
 
   Future<void> playNext() async {
     _currentIndex = (_currentIndex + 1) % _playList.length;
+    await _playCurrentSong();
   }
 
   Future<void> playPrevious() async {
-
+    _currentIndex = (_currentIndex - 1 + _playList.length ) % playList.length;
+    await _playCurrentSong();
   }
   Future<void>seek( Duration position ) async{
     await _audioPlayer.seek(position);
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _audioPlayer.dispose();
   }
 }
