@@ -38,9 +38,9 @@ class MediaProvider extends ChangeNotifier {
         notifyListeners();
     });
 
-    _audioPlayer.onPositionChanged.listen((state){
-        _isPlaying = state == PlayerState.playing;
-        notifyListeners();
+    _audioPlayer.onPlayerStateChanged.listen((state) {
+      _isPlaying = state == PlayerState.playing;
+      notifyListeners();
     });
 
     _audioPlayer.onPlayerComplete.listen((event){});
@@ -49,5 +49,30 @@ class MediaProvider extends ChangeNotifier {
   }
 
 
+  Future<void>setAudioSource()async{
+    if( currentSong != null ){
+      final url = currentSong!.url;
+      await _audioPlayer.setSourceUrl(url!);
+      _duration = Duration(seconds: currentSong!.durationSeconds);
+      _position = Duration.zero;
+      notifyListeners();
+    }
+  }
 
+  Future<void> playSongAtIndex(int index) async {
+    if (index >= 0 && index < _playList.length) {
+      _currentIndex = index;
+    }
+  }
+
+  Future<void> playNext() async {
+    _currentIndex = (_currentIndex + 1) % _playList.length;
+  }
+
+  Future<void> playPrevious() async {
+
+  }
+  Future<void>seek( Duration position ) async{
+    await _audioPlayer.seek(position);
+  }
 }
