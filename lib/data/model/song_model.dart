@@ -11,38 +11,25 @@ class SongModel extends Song {
   static List<Song> getSampleSongs() {
     return const [
       SongModel(
-        title: 'Dreams',
-        artist: 'Joakim Karud',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        durationSeconds: 356,
+        title: 'Lofi Study',
+        artist: 'FASSounds',
+        url:
+        'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3',
+        durationSeconds: 146,
       ),
-
       SongModel(
-        title: 'Summer Vibes',
-        artist: 'Luke Bergs',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-        durationSeconds: 299,
+        title: 'Good Night',
+        artist: 'FASSounds',
+        url:
+        'https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3',
+        durationSeconds: 147,
       ),
-
       SongModel(
-        title: 'Chill Night',
-        artist: 'A Himitsu',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-        durationSeconds: 321,
-      ),
-
-      SongModel(
-        title: 'Morning Coffee',
-        artist: 'LiQWYD',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-        durationSeconds: 287,
-      ),
-
-      SongModel(
-        title: 'Ocean Drive',
-        artist: 'MBB',
-        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-        durationSeconds: 412,
+        title: 'Cinematic Time Lapse',
+        artist: 'Lexin_Music',
+        url:
+        'https://cdn.pixabay.com/download/audio/2022/08/02/audio_884fe92c21.mp3',
+        durationSeconds: 135,
       ),
     ];
   }
