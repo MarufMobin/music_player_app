@@ -5,14 +5,9 @@ import 'package:music_player_app/presentation/screen/home/provider/media_provide
 import 'package:music_player_app/presentation/screen/home/widgets/song_list_item.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     final song = playList[index];
                     final isSelected = index == provider.currentIndex;
-
                     return SongListItem(
                       song: song,
                       index: index,
                       isPlaying: provider.isPlaying,
                       isSelected: isSelected,
-                      onTap: () {
-                        provider.playSongAtIndex(index);
+                      onTap: () async {
+                        await provider.playSongAtIndex(index);
+                        debugPrint('Tapped: $index');
                       },
                     );
                   },

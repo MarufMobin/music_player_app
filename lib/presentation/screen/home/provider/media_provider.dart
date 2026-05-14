@@ -4,13 +4,22 @@ import 'package:music_player_app/data/model/song_model.dart';
 import 'package:music_player_app/domain/entities/song.dart';
 
 class MediaProvider extends ChangeNotifier {
+
   final AudioPlayer _audioPlayer = AudioPlayer();
+
   final List<Song> _playList = SongModel.getSampleSongs();
 
   int _currentIndex = 0;
+
   bool _isPlaying = false;
+
   Duration _duration = Duration.zero;
+
   Duration _position = Duration.zero;
+
+  // =========================
+  // GETTERS
+  // =========================
 
   List<Song> get playList => _playList;
 
@@ -25,79 +34,166 @@ class MediaProvider extends ChangeNotifier {
 
   int get currentIndex => _currentIndex;
 
+  // =========================
+  // CONSTRUCTOR
+  // =========================
+
   MediaProvider() {
-    _initialAudioPlayer();
+    _initializeAudioPlayer();
   }
 
-  void _initialAudioPlayer() {
+  // =========================
+  // INITIALIZE LISTENERS
+  // =========================
+
+  void _initializeAudioPlayer() {
+
+    // Total duration
     _audioPlayer.onDurationChanged.listen((newDuration) {
       _duration = newDuration;
       notifyListeners();
     });
 
-    _audioPlayer.onPositionChanged.listen((newPosition){
-        _position = newPosition;
-        notifyListeners();
+    // Current position
+    _audioPlayer.onPositionChanged.listen((newPosition) {
+      _position = newPosition;
+      notifyListeners();
     });
 
+    // Playing / Paused state
     _audioPlayer.onPlayerStateChanged.listen((state) {
       _isPlaying = state == PlayerState.playing;
       notifyListeners();
     });
 
-    _audioPlayer.onPlayerComplete.listen((event){});
-
-    if( _playList.isNotEmpty){}
+    // Auto next song
+    _audioPlayer.onPlayerComplete.listen((event) {
+      playNext();
+    });
   }
 
+  // =========================
+  // PLAY SONG
+  // =========================
 
-  Future<void>_setAudioSource()async{
-    if( currentSong != null ){
-      final url = currentSong!.url;
-      await _audioPlayer.setSourceUrl(url!);
-      _duration = Duration(seconds: currentSong!.durationSeconds);
+  Future<void> _playCurrentSong() async {
+
+    if (currentSong == null) return;
+
+    try {
+
       _position = Duration.zero;
+
+      await _audioPlayer.stop();
+
+      await _audioPlayer.play(
+        UrlSource(currentSong!.url),
+      );
+
       notifyListeners();
+
+    } catch (e) {
+      debugPrint("Error playing song: $e");
     }
   }
 
-  Future<void> playPause() async{
-    if( isPlaying ){
-      await _audioPlayer.pause();
-    }else{
-      await _audioPlayer.play(UrlSource(currentSong!.url));
-    }
-  }
-
-  Future<void> _playCurrentSong()async{
-    await _setAudioSource();
-    await _audioPlayer.play(UrlSource(currentSong!.url));
-    notifyListeners();
-  }
+  // =========================
+  // PLAY SONG AT INDEX
+  // =========================
 
   Future<void> playSongAtIndex(int index) async {
+
     if (index >= 0 && index < _playList.length) {
+
       _currentIndex = index;
-      _playCurrentSong();
+
+      await _playCurrentSong();
     }
   }
 
+  // =========================
+  // PLAY / PAUSE
+  // =========================
+
+  Future<void> playPause() async {
+
+    try {
+
+      if (_isPlaying) {
+
+        await _audioPlayer.pause();
+
+      } else {
+
+        // Resume if paused
+        await _audioPlayer.resume();
+      }
+
+    } catch (e) {
+      debugPrint("Play/Pause Error: $e");
+    }
+  }
+
+  // =========================
+  // NEXT SONG
+  // =========================
+
   Future<void> playNext() async {
+
+    if (_playList.isEmpty) return;
+
     _currentIndex = (_currentIndex + 1) % _playList.length;
+
     await _playCurrentSong();
   }
 
+  // =========================
+  // PREVIOUS SONG
+  // =========================
+
   Future<void> playPrevious() async {
-    _currentIndex = (_currentIndex - 1 + _playList.length ) % playList.length;
+
+    if (_playList.isEmpty) return;
+
+    _currentIndex =
+        (_currentIndex - 1 + _playList.length) % _playList.length;
+
     await _playCurrentSong();
   }
-  Future<void>seek( Duration position ) async{
+
+  // =========================
+  // SEEK
+  // =========================
+
+  Future<void> seek(Duration position) async {
+
     await _audioPlayer.seek(position);
   }
 
+  // =========================
+  // STOP
+  // =========================
+
+  Future<void> stop() async {
+
+    await _audioPlayer.stop();
+
+    _position = Duration.zero;
+
+    _isPlaying = false;
+
+    notifyListeners();
+  }
+
+  // =========================
+  // DISPOSE
+  // =========================
+
   @override
-  void dispose(){
-    super.dispose();
+  void dispose() {
+
     _audioPlayer.dispose();
+
+    super.dispose();
   }
 }

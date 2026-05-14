@@ -25,9 +25,10 @@ class SongListItem extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.accent : Colors.white,
+          color: isSelected ? AppColors.accent.withValues(alpha: 0.2) : Colors.transparent,
           shape: BoxShape.circle,
         ),
+        alignment: Alignment.center,
         child: isSelected && isPlaying
             ? Icon(Icons.music_note, color: AppColors.accent)
             : Text(
@@ -37,20 +38,21 @@ class SongListItem extends StatelessWidget {
                       ? AppColors.accent
                       : AppColors.textSecondary,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18
                 ),
               ),
       ),
       title: Text(
         song.title,
         style: TextStyle(
-          color: isSelected ? AppColors.accent : AppColors.textSecondary,
+          color: isSelected ? AppColors.accent : AppColors.white,
           fontWeight: FontWeight.bold,
         ),
       ),
       subtitle: Text(
         song.artist,
         style: TextStyle(
-          color: isSelected ? AppColors.accent : AppColors.textSecondary,
+          color: AppColors.textSecondary,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -58,6 +60,7 @@ class SongListItem extends StatelessWidget {
         _formDuration(Duration(seconds: song.durationSeconds)),
         style: TextStyle(color: AppColors.textSecondary),
       ),
+      onTap: onTap,
     );
   }
 

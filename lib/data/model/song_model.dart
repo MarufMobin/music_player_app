@@ -11,24 +11,38 @@ class SongModel extends Song {
   static List<Song> getSampleSongs() {
     return const [
       SongModel(
-        title: 'SoundHelix Song 1',
-        artist: 'SoundHelix',
+        title: 'Dreams',
+        artist: 'Joakim Karud',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
         durationSeconds: 356,
       ),
 
       SongModel(
-        title: 'SoundHelix Song 2',
-        artist: 'SoundHelix',
+        title: 'Summer Vibes',
+        artist: 'Luke Bergs',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
         durationSeconds: 299,
       ),
 
       SongModel(
-        title: 'SoundHelix Song 3',
-        artist: 'SoundHelix',
+        title: 'Chill Night',
+        artist: 'A Himitsu',
         url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
         durationSeconds: 321,
+      ),
+
+      SongModel(
+        title: 'Morning Coffee',
+        artist: 'LiQWYD',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+        durationSeconds: 287,
+      ),
+
+      SongModel(
+        title: 'Ocean Drive',
+        artist: 'MBB',
+        url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+        durationSeconds: 412,
       ),
     ];
   }
