@@ -1,10 +1,10 @@
-class Song {
+class Surah {
   final String title;
   final String artist;
   final String url;
   final int durationSeconds;
 
-  const Song({
+  const Surah({
     required this.title,
     required this.artist,
     required this.url,

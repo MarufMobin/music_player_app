@@ -12,7 +12,7 @@ class SongListItem extends StatelessWidget {
     required this.onTap,
   });
 
-  final Song song;
+  final Surah song;
   final int index;
   final bool isPlaying;
   final bool isSelected;

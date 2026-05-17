@@ -7,7 +7,7 @@ class MediaProvider extends ChangeNotifier {
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
-  final List<Song> _playList = SongModel.getSampleSongs();
+  final List<Surah> _playList = SurahModel.getSampleSurah();
 
   int _currentIndex = 0;
 
@@ -21,9 +21,9 @@ class MediaProvider extends ChangeNotifier {
   // GETTERS
   // =========================
 
-  List<Song> get playList => _playList;
+  List<Surah> get playList => _playList;
 
-  Song? get currentSong =>
+  Surah? get currentSong =>
       _playList.isNotEmpty ? _playList[_currentIndex] : null;
 
   bool get isPlaying => _isPlaying;
